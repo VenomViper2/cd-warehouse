@@ -59,6 +59,20 @@ public class PurchaseCdTest {
     }
 
     @Test
+    void whenInTopOneHundredAndPriceIs50PenceLessThanLowestCompetitorPricePriceIsStillLower() {
+        Charts chart = Mockito.mock(Charts.class);
+        PriceChecker priceChecker = Mockito.mock(PriceChecker.class);
+        when(chart.getChartPosition()).thenReturn(1);
+        when(priceChecker.getLowestCompetitorPrice()).thenReturn(6.0);
+        Cd cd = new Cd("David Bowie", "Blackstar", 1, chart, 5.50, priceChecker);
+        Customer customer = new Customer();
+        Payment payment = () -> true;
+        cd.buy(customer, payment);
+        assertEquals(5, cd.getPrice());
+
+    }
+
+    @Test
     void whenNotInTopOneHundredPriceIsNotChanged() {
         Charts chart = Mockito.mock(Charts.class);
         PriceChecker priceChecker = Mockito.mock(PriceChecker.class);
